@@ -30,14 +30,36 @@
             }
         }
 
-        private BizLogic.Database.CustomerBizLogic _bizLogic;
+        private Helpers.ProductHelper _productHelper;
+        internal Helpers.ProductHelper ProductHelper
+        {
+            get
+            {
+                if (_productHelper == null)
+                    _productHelper = new Helpers.ProductHelper();
+                return _productHelper;
+            }
+        }
+
+        private BizLogic.Database.CustomerBizLogic _customerBizLogic;
         internal BizLogic.Database.CustomerBizLogic BizLogic
         {
             get
             {
-                if (_bizLogic == null)
-                    _bizLogic = new BizLogic.Database.CustomerBizLogic(this);
-                return _bizLogic;
+                if (_customerBizLogic == null)
+                    _customerBizLogic = new BizLogic.Database.CustomerBizLogic(this);
+                return _customerBizLogic;
+            }
+        }
+
+        private BizLogic.Database.ProductBizLogic _productBizLogic;
+        internal BizLogic.Database.ProductBizLogic ProductBizLogic
+        {
+            get
+            {
+                if (_productBizLogic == null)
+                                    _productBizLogic = new BizLogic.Database.ProductBizLogic(this);
+                return _productBizLogic;
             }
         }
     }

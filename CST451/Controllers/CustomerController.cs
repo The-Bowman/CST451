@@ -9,7 +9,7 @@ namespace CST451.Controllers
     {
         // allow access to factory
         private Factory _factory;
-        internal Factory _Factory
+        internal Factory oFactory
         {
             get
             {
@@ -38,7 +38,7 @@ namespace CST451.Controllers
         [HttpPost]
         public IActionResult AddCustomer(CustomerViewModel customer)
         {
-            customer = _Factory.CustomerHelper.AddCustomer(customer);
+            customer = oFactory.CustomerHelper.AddCustomer(customer);
             return View("AddCustomerResult", customer);
         }
 
@@ -60,7 +60,7 @@ namespace CST451.Controllers
         [HttpPost]
         public IActionResult Login(CustomerViewModel customer)
         {
-            customer = _Factory.CustomerHelper.Login(customer);
+            customer = oFactory.CustomerHelper.Login(customer);
             HttpContext.Session.SetString("username", customer.Name);            
             HttpContext.Session.SetString("userID", customer.ID.ToString());
             HttpContext.Session.SetString("cart", JsonSerializer.Serialize(new CartViewModel()));
