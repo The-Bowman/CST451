@@ -3,12 +3,12 @@ using System.Data.SqlClient;
 
 namespace CST451.BizLogic.Database
 {
-    public class CustomerBizLogic
+    public class EmployeeBizLogic
     {
         // Connection string - temporary solution until appsettings.json is resolved
         private string _sql = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=dbPCPARTS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private Factory _factory;
-        internal Factory _Factory
+        internal Factory oFactory
         {
             get
             {
@@ -16,39 +16,45 @@ namespace CST451.BizLogic.Database
                     _factory = new Factory();
                 return _factory;
             }
-        }      
+        }
 
-        public CustomerBizLogic(Factory factory)
+        public EmployeeBizLogic(Factory factory)
         {
-            _factory = factory;             
+            _factory = factory;
         }
 
         /// <summary>
         /// Executes SQL Statement to add customer to database
         /// </summary>
-        /// <param name="customer">CustomerDataModel</param>
+        /// <param name="employee">CustomerDataModel</param>
         /// <returns>CustomerDataModel</returns>
         /// <exception cref="Exception"></exception>
-        public CustomerDataModel AddCustomer(CustomerDataModel customer)
+        public EmployeeDataModel AddEmployee(EmployeeDataModel employee, bool isAdmin)
         {
+            if (!isAdmin)
+            {
+                employee.Success = false;
+                return employee;
+            }
+
             // prepared statement setup
-            string addCustomerQry = "INSERT INTO [dbo].[Customer] (Name, Address, City, State, Zip, Country, Email, Phone, Password) VALUES (@Name, @Address, @City, @State, @Zip, @Country, @Email, @Phone, @Password)";
+            string addEmployeeQry = "INSERT INTO [dbo].[Employee] (Name, Address, City, State, Zip, Country, Email, Phone, IsAdmin, Password) VALUES (@Name, @Address, @City, @State, @Zip, @Country, @Email, @Phone, @IsAdmin, @Password)";
 
             using (SqlConnection conn = new SqlConnection(_sql))
             {
-                using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
+                using (SqlCommand cmd = new SqlCommand(addEmployeeQry, conn))
                 {
                     // add parameters to statement
-                    cmd.Parameters.AddWithValue("@Name", customer.Name);
-                    cmd.Parameters.AddWithValue("@Address", customer.Address);
-                    cmd.Parameters.AddWithValue("@City", customer.City);
-                    cmd.Parameters.AddWithValue("@State", customer.State);
-                    cmd.Parameters.AddWithValue("@Zip", customer.Zip);
-                    cmd.Parameters.AddWithValue("@Country", customer.Country);
-                    cmd.Parameters.AddWithValue("@Email", customer.Email);
-                    cmd.Parameters.AddWithValue("@Phone", customer.Phone);
-                    cmd.Parameters.AddWithValue("@Password", customer.Password);
-
+                    cmd.Parameters.AddWithValue("@Name", employee.Name);
+                    cmd.Parameters.AddWithValue("@Address", employee.Address);
+                    cmd.Parameters.AddWithValue("@City", employee.City);
+                    cmd.Parameters.AddWithValue("@State", employee.State);
+                    cmd.Parameters.AddWithValue("@Zip", employee.Zip);
+                    cmd.Parameters.AddWithValue("@Country", employee.Country);
+                    cmd.Parameters.AddWithValue("@Email", employee.Email);
+                    cmd.Parameters.AddWithValue("@Phone", employee.Phone);
+                    cmd.Parameters.AddWithValue("@Password", employee.Password);
+                    cmd.Parameters.AddWithValue("@IsAdmin", 0);
                     try
                     {
                         conn.Open();
@@ -58,12 +64,12 @@ namespace CST451.BizLogic.Database
                         // successful result 
                         if (results == 1)
                         {
-                            customer.Success = true;
-                            return customer;
+                            employee.Success = true;
+                            return employee;
                         }
                         // return with fail result
-                        customer.Success = false;
-                        return customer;
+                        employee.Success = false;
+                        return employee;
 
                     }
                     catch (SqlException ex)
@@ -73,27 +79,27 @@ namespace CST451.BizLogic.Database
                     }
                 }
             }
-           
+
         }
 
         /// <summary>
         /// Authenticates user against database
         /// </summary>
-        /// <param name="customer">CustomerDataModel</param>
+        /// <param name="employee">CustomerDataModel</param>
         /// <returns>CustomerDataModel</returns>
         /// <exception cref="Exception"></exception>
-        public CustomerDataModel LoginCustomer(CustomerDataModel customer)
+        public EmployeeDataModel LoginEmployee(EmployeeDataModel employee)
         {
             // prepared statement
-            string loginQry = "SELECT * FROM [dbo].[Customer] WHERE Email=@Email and Password=@Password";
+            string loginQry = "SELECT * FROM [dbo].[Employee] WHERE Username=@Username and Password=@Password";
 
             using (SqlConnection conn = new SqlConnection(_sql))
             {
                 using (SqlCommand cmd = new SqlCommand(loginQry, conn))
                 {
                     // setup parameters
-                    cmd.Parameters.AddWithValue("@Email", customer.Email);
-                    cmd.Parameters.AddWithValue("@Password", customer.Password);
+                    cmd.Parameters.AddWithValue("@Username", employee.Username);
+                    cmd.Parameters.AddWithValue("@Password", employee.Password);
 
                     try
                     {
@@ -106,25 +112,26 @@ namespace CST451.BizLogic.Database
                             reader.Read();
 
                             // assign values
-                            customer.ID = (int)reader["ID"];
-                            customer.Name = reader["Name"].ToString();                            
-                            customer.Email = reader["Email"].ToString();
-                            customer.Address = reader["Address"].ToString();
-                            customer.City = reader["City"].ToString();
-                            customer.State = reader["State"].ToString();
-                            customer.Zip = (int)reader["Zip"];
-                            customer.Phone = reader["Phone"].ToString();
-                            customer.Success = true;
-
+                            employee.ID = (int)reader["ID"];
+                            employee.Name = reader["Name"].ToString();
+                            employee.Email = reader["Email"].ToString();
+                            employee.Username = reader["Username"].ToString();
+                            employee.Address = reader["Address"].ToString();
+                            employee.City = reader["City"].ToString();
+                            employee.State = reader["State"].ToString();
+                            employee.Zip = (int)reader["Zip"];
+                            employee.Phone = reader["Phone"].ToString();
+                            employee.IsAdmin = Convert.ToBoolean(reader["IsAdmin"]);
+                            employee.Success = true;
                             conn.Close();
-                            return customer;
+                            return employee;
                         }
 
                         // return with fail result
-                        customer.Success = false;
+                        employee.Success = false;
                         conn.Close();
 
-                        return customer;
+                        return employee;
 
                     }
                     catch (SqlException ex)
@@ -137,3 +144,4 @@ namespace CST451.BizLogic.Database
         }
     }
 }
+

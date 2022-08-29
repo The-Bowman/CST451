@@ -1,4 +1,5 @@
-﻿using CST451.Data.DataModel.ProductDataModels;
+﻿using CST451.Controllers;
+using CST451.Data.DataModel.ProductDataModels;
 using System.Data.SqlClient;
 
 namespace CST451.BizLogic.Database
@@ -22,6 +23,12 @@ namespace CST451.BizLogic.Database
             _factory = factory;
         }
 
+        /// <summary>
+        /// Get singular product from db from product ID
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public ProductDataModel GetOne(ProductDataModel product)
         {
             // prepared statement
@@ -50,6 +57,7 @@ namespace CST451.BizLogic.Database
                             product.Description = reader["Description"].ToString();
                             product.Price = (double?)Convert.ToDecimal(reader["Price"]);
                             product.Compatibility = (int?)Convert.ToInt32(reader["Compatibility"]);
+                            product.ImagePath = reader["ImagePath"].ToString();
                             product.Success = true;
                             conn.Close();
                             return product;
@@ -71,6 +79,11 @@ namespace CST451.BizLogic.Database
             }
         }
 
+        /// <summary>
+        /// Get all products from db
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public List<ProductDataModel> GetAll()
         {
             string getQry = "SELECT * FROM [dbo].[Product];";
@@ -119,6 +132,54 @@ namespace CST451.BizLogic.Database
                     }
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// Add product to db
+        /// </summary>
+        /// <param name="dbProduct"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ProductDataModel Add(ProductDataModel dbProduct)
+        {
+            // prepared statement setup
+            string addCustomerQry = "INSERT INTO [dbo].[Product] (Name, Description, Compatibility, Price) VALUES (@Name, @Description, @Compatibility, @Price)";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
+                {
+                    // add parameters to statement
+                    cmd.Parameters.AddWithValue("@Name", dbProduct.Name);
+                    cmd.Parameters.AddWithValue("@Description", dbProduct.Description);
+                    cmd.Parameters.AddWithValue("@Compatibility", dbProduct.Compatibility);
+                    cmd.Parameters.AddWithValue("@Price", dbProduct.Price);
+
+
+                    try
+                    {
+                        conn.Open();
+                        int results = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        // successful result 
+                        if (results == 1)
+                        {
+                            dbProduct.Success = true;
+                            return dbProduct;
+                        }
+                        // return with fail result
+                        dbProduct.Success = false;
+                        return dbProduct;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to add the customer\nError: " + ex.Message);
+                    }
+                }
             }
         }
     }

@@ -27,7 +27,7 @@ namespace CST451.Helpers
         public CustomerViewModel AddCustomer(CustomerViewModel customer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(customer);
-            dmCustomer = _Factory.BizLogic.AddCustomer(dmCustomer);
+            dmCustomer = _Factory.CustomerBizLogic.AddCustomer(dmCustomer);
             customer = ParseDMCustomerToVMCustomer(dmCustomer);
             return customer;
         }
@@ -40,7 +40,7 @@ namespace CST451.Helpers
         public CustomerViewModel Login(CustomerViewModel vmCustomer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
-            dmCustomer = _Factory.BizLogic.LoginCustomer(dmCustomer);
+            dmCustomer = _Factory.CustomerBizLogic.LoginCustomer(dmCustomer);
             return ParseDMCustomerToVMCustomer(dmCustomer);
         }
 
@@ -49,6 +49,11 @@ namespace CST451.Helpers
 
         #region "Parsing
 
+        /// <summary>
+        /// Parse from View to Data layers
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         private CustomerDataModel ParseVMCustomerToDMCustomer(CustomerViewModel customer)
         {
             CustomerDataModel customerDataModel = new CustomerDataModel()
@@ -69,6 +74,11 @@ namespace CST451.Helpers
             return customerDataModel;
         }
 
+        /// <summary>
+        /// Parse from Data to View layers
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         private CustomerViewModel ParseDMCustomerToVMCustomer(CustomerDataModel customer)
         {
             CustomerViewModel customerViewModel = new CustomerViewModel()

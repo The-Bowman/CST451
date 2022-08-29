@@ -19,6 +19,11 @@ namespace CST451.Helpers
             }
         }
 
+        /// <summary>
+        /// Get singular product from product ID 
+        /// </summary>
+        /// <param name="vmProduct"></param>
+        /// <returns></returns>
         public ProductViewModel GetOne(ProductViewModel vmProduct)
         {
             ProductDataModel dbProduct = new ProductDataModel();
@@ -28,6 +33,10 @@ namespace CST451.Helpers
             return vmProduct;
         }
 
+        /// <summary>
+        /// Get all products from db
+        /// </summary>
+        /// <returns></returns>
         internal List<ProductViewModel> GetAll()
         {
             List<ProductViewModel> products = new List<ProductViewModel>();
@@ -37,7 +46,26 @@ namespace CST451.Helpers
             return products;
         }
 
-        #region "Parsing
+        /// <summary>
+        /// Add product to db
+        /// </summary>
+        /// <param name="vmProduct"></param>
+        /// <returns></returns>
+        internal ProductViewModel AddProduct(ProductViewModel vmProduct)
+        {
+            ProductDataModel dbProduct = new ProductDataModel();
+            dbProduct = ParseVMtoDB(vmProduct);
+            dbProduct = oFactory.ProductBizLogic.Add(dbProduct);
+            vmProduct = ParseDBtoVM(dbProduct);
+            return vmProduct;
+        }
+
+        #region Parsing
+        /// <summary>
+        /// Parse from View and Data layers
+        /// </summary>
+        /// <param name="vmProduct"></param>
+        /// <returns></returns>
         private ProductDataModel ParseVMtoDB(ProductViewModel vmProduct)
         {
             ProductDataModel dbProduct = new ProductDataModel()
@@ -53,6 +81,11 @@ namespace CST451.Helpers
             return dbProduct;
         }
 
+        /// <summary>
+        /// Parse from Data to View models
+        /// </summary>
+        /// <param name="dbProduct"></param>
+        /// <returns></returns>
         private ProductViewModel ParseDBtoVM(ProductDataModel dbProduct)
         {
             ProductViewModel vmProduct = new ProductViewModel()
@@ -71,6 +104,5 @@ namespace CST451.Helpers
 
         #endregion
 
-       
-    }
+     }
 }

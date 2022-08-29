@@ -7,6 +7,16 @@
     /// </summary>
     public class Factory
     {
+        private Helpers.CartHelper _cartHelper;
+        internal Helpers.CartHelper CartHelper
+        {
+            get
+            {
+                if (_cartHelper == null)
+                    _cartHelper = new Helpers.CartHelper();
+                return _cartHelper;
+            }
+        }
 
         private Helpers.ConnectionHelper _connectionHelper;
         internal Helpers.ConnectionHelper ConnectionHelper
@@ -30,6 +40,17 @@
             }
         }
 
+        private Helpers.EmployeeHelper _employeeHelper;
+        internal Helpers.EmployeeHelper EmployeeHelper
+        {
+            get
+            {
+                if (_employeeHelper == null)
+                    _employeeHelper = new Helpers.EmployeeHelper();
+                return _employeeHelper;
+            }
+        }
+
         private Helpers.ProductHelper _productHelper;
         internal Helpers.ProductHelper ProductHelper
         {
@@ -42,7 +63,7 @@
         }
 
         private BizLogic.Database.CustomerBizLogic _customerBizLogic;
-        internal BizLogic.Database.CustomerBizLogic BizLogic
+        internal BizLogic.Database.CustomerBizLogic CustomerBizLogic
         {
             get
             {
@@ -58,8 +79,19 @@
             get
             {
                 if (_productBizLogic == null)
-                                    _productBizLogic = new BizLogic.Database.ProductBizLogic(this);
+                    _productBizLogic = new BizLogic.Database.ProductBizLogic(this);
                 return _productBizLogic;
+            }
+        }
+
+        private BizLogic.Database.EmployeeBizLogic _employeeBizLogic;
+        internal BizLogic.Database.EmployeeBizLogic EmployeeBizLogic
+        {
+            get
+            {
+                if (_employeeBizLogic == null)
+                    _employeeBizLogic = new BizLogic.Database.EmployeeBizLogic(this);
+                return _employeeBizLogic;
             }
         }
     }

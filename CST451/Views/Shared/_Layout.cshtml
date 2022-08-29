@@ -25,12 +25,27 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="AddCustomer">Add Customer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Product" asp-action="Index">Browse Products</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Product" asp-action="BrowseAll">Browse Products</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="ViewCart">Cart</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="EmployeePortal">Employee Portal</a>
+                        </li>
+                        @if (ViewBag.isAdmin != null)
+                        {
+                            if (ViewBag.isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="AddEmployee">Add Employee</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>
@@ -44,8 +59,9 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - CST451 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <span>&copy;Dustin Johnson 2022 CST-451 -- Stay Classy</span>
         </div>
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

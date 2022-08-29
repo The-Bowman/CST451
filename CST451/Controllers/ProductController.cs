@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CST451.Models.ViewModels;
 using CST451.Models.ViewModels.Products;
+using System.Text.Json;
 
 namespace CST451.Controllers
 {
@@ -17,10 +19,25 @@ namespace CST451.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult BrowseAll()
         {
             List<ProductViewModel> products = oFactory.ProductHelper.GetAll();
             return View(products);
+        }
+
+        public IActionResult AddToCart(int productID)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+            {
+                ViewBag.Message = "You must be signed in to perform this action";
+                return View("BrowseAll", oFactory.ProductHelper.GetAll());
+            }
+            ProductViewModel product = oFactory.ProductHelper.GetOne(new ProductViewModel() { ID = productID });
+            CartViewModel cart = oFactory.CartHelper.GetCart(HttpContext.Session.GetString("cart"));
+            cart.Products.Add(product);
+            HttpContext.Session.SetString("cart", JsonSerializer.Serialize(cart));
+            ViewBag.Message = "Item added to cart successfully";
+            return View("BrowseAll", oFactory.ProductHelper.GetAll());
         }
     }
 }

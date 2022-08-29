@@ -12,6 +12,7 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public bool? IsAdmin { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
         public bool Success { get; set; }
 
@@ -19,7 +20,7 @@
         {
         }
 
-        public EmployeeViewModel(int? employeeID, string name, string address, string city, string state, int? zip, string country, string email, string phone, bool? isAdmin, string password)
+        public EmployeeViewModel(int? employeeID, string name, string address, string city, string state, int? zip, string country, string email, string phone, bool? isAdmin, string username ,string password)
         {
             ID = employeeID;
             Name = name;
@@ -31,6 +32,7 @@
             Email = email;
             Phone = phone;
             IsAdmin = isAdmin;
+            Username = username;
             Password = password;
         }
     }
