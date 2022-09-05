@@ -8,5 +8,6 @@
         public int? Compatibility { get; set; }
         public double? Price { get; set; }
         public string ImagePath { get; set; }
+        public bool? Success { get; set; }
     }
 }

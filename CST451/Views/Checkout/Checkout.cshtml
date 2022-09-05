@@ -1,0 +1,223 @@
+﻿@model CST451.Models.ViewModels.Checkout.CheckoutModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Checkout</h1>
+<hr />
+<form action="ProcessCheckout" method="post">
+    <div>
+        <h3>Order Details</h3>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="Order.CustomerName">Customer Name</label>
+                <input asp-for="Order.CustomerName" type="text" readonly class="form-control-plaintext mb-2" id="inputName" value="@Model.Order.CustomerName" />
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Order.CustomerID">Customer ID:</label>
+                <input asp-for="Order.CustomerID" type="number" readonly class="form-control-plaintext mb-2" value="@Model.Order.CustomerID" />
+            </div>
+        </div>
+        <hr />
+        @foreach (var item in Model.OrderLines)
+        {
+            <div class="row">
+
+                <label for="productID" class="col-sm-2 col-form-label">Product ID:</label>
+                <div class="col-sm-2">
+                    <input readonly type="number" class="form-control-plaintext" id="productID" value="@item.ProductID">
+                </div>
+
+                <label for="productName" class="col-sm-2 col-form-label">Product Name:</label>
+                <div class="col-sm-2">
+                    <input type="text" readonly class="form-control-plaintext" id="productName" value="@item.ProductName">
+                </div>
+
+                <label for="productPrice" class="col-sm-2 col-form-label">Price: </label>
+                <div class="col-sm-2">
+                    <input type="number" readonly id="productPrice" class="form-control-plaintext" value="@item.ProductPrice">
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+    <div>
+        <h4>Shipping Information</h4>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerShippingInfo.Name" type="text" class="form-control mb-2" id="inputName" placeholder="Recipient Name">
+        </div>
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerShippingInfo.Email" type="email" class="form-control mb-2" id="inputEmail" placeholder="Recipient Email">
+        </div>
+    </div>
+    <div class="form-group">
+        <input asp-for="CustomerShippingInfo.Address" type="text" class="form-control mb-2" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerShippingInfo.City" type="text" class="form-control mb-2" id="inputCity" placeholder="City">
+        </div>
+        <div class="form-group col-md-4">
+            <select asp-for="CustomerShippingInfo.State" id="inputState" class="form-control mb-2">
+                <option selected>State...</option>
+                <option value="Alabama">Alabama</option>
+                <option value="Alaska">Alaska</option>
+                <option value="Arizona">Arizona</option>
+                <option value="Arkansas">Arkansas</option>
+                <option value="California">California</option>
+                <option value="Colorado">Colorado</option>
+                <option value="Connecticut">Connecticut</option>
+                <option value="Delaware">Delaware</option>
+                <option value="Florida">Florida</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Hawaii">Hawaii</option>
+                <option value="Idaho">Idaho</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Indiana">Indiana</option>
+                <option value="Iowa">Iowa</option>
+                <option value="Kansas">Kansas</option>
+                <option value="Louisiana">Louisiana</option>
+                <option value="Maine">Maine</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="Michigan">Michigan</option>
+                <option value="Minnesota">Minnesota</option>
+                <option value="Mississippi">Mississippi</option>
+                <option value="Missouri">Missouri</option>
+                <option value="Montana">Montana</option>
+                <option value="Nebraska">Nebraska</option>
+                <option value="Nevada">Nevada</option>
+                <option value="New Hampshire">New Hampshire</option>
+                <option value="New Jersey">New Jersey</option>
+                <option value="New Mexico">New Mexico</option>
+                <option value="New York">New York</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="North Dakota">North Dakota</option>
+                <option value="Ohio">Ohio</option>
+                <option value="Oklahoma">Oklahoma</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <option value="Rhode Island">Rhode Island</option>
+                <option value="South Carolina">South Carolina</option>
+                <option value="South Dakota">South Dakota</option>
+                <option value="Tennessee">Tennessee</option>
+                <option value="Texas">Texas</option>
+                <option value="Utah">Utah</option>
+                <option value="Vermont">Vermont</option>
+                <option value="Virginia">Virginia</option>
+                <option value="Washington">Washington</option>
+                <option value="West Virginia">West Virginia</option>
+                <option value="Wisconsin">Wisconsin</option>
+                <option value="Wyoming">Wyoming</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="CustomerBillingInfo.Zip" type="number" class="form-control mb-2" id="inputZip" placeholder="Zip">
+        </div>
+    </div>
+    <input asp-for="CustomerShippingInfo.Country" type="hidden" value="USA">
+    <hr />
+    <div>
+        <h4>Billing Information</h4>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerBillingInfo.Name" type="text" class="form-control mb-2" id="inputEmail4" placeholder="Customer Name">
+        </div>
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerBillingInfo.Email" type="email" class="form-control mb-2" id="inputPassword4" placeholder="Customer Email">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <input asp-for="CreditCardNumber" type="text" class="form-control mb-2" id="cardNumber" placeholder="Card Number... 1234-5678-9012-3456">
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="ExpirationDate" type="text" class="form-control mb-2" id="inputExp" placeholder="Exp Date (MM/YY)">
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="CVV" type="text" class="form-control mb-2" id="inputCVV" placeholder="CVV (233)">
+        </div>
+    </div>
+    <div class="form-group">
+        <input asp-for="CustomerBillingInfo.Address" type="text" class="form-control mb-2" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <input asp-for="CustomerBillingInfo.City" type="text" class="form-control mb-2" id="inputCity" placeholder="City">
+        </div>
+        <div class="form-group col-md-4">
+            <select asp-for="CustomerBillingInfo.State" id="inputState" class="form-control mb-2">
+                <option selected>State...</option>
+                <option value="Alabama">Alabama</option>
+                <option value="Alaska">Alaska</option>
+                <option value="Arizona">Arizona</option>
+                <option value="Arkansas">Arkansas</option>
+                <option value="California">California</option>
+                <option value="Colorado">Colorado</option>
+                <option value="Connecticut">Connecticut</option>
+                <option value="Delaware">Delaware</option>
+                <option value="Florida">Florida</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Hawaii">Hawaii</option>
+                <option value="Idaho">Idaho</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Indiana">Indiana</option>
+                <option value="Iowa">Iowa</option>
+                <option value="Kansas">Kansas</option>
+                <option value="Louisiana">Louisiana</option>
+                <option value="Maine">Maine</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="Michigan">Michigan</option>
+                <option value="Minnesota">Minnesota</option>
+                <option value="Mississippi">Mississippi</option>
+                <option value="Missouri">Missouri</option>
+                <option value="Montana">Montana</option>
+                <option value="Nebraska">Nebraska</option>
+                <option value="Nevada">Nevada</option>
+                <option value="New Hampshire">New Hampshire</option>
+                <option value="New Jersey">New Jersey</option>
+                <option value="New Mexico">New Mexico</option>
+                <option value="New York">New York</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="North Dakota">North Dakota</option>
+                <option value="Ohio">Ohio</option>
+                <option value="Oklahoma">Oklahoma</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <option value="Rhode Island">Rhode Island</option>
+                <option value="South Carolina">South Carolina</option>
+                <option value="South Dakota">South Dakota</option>
+                <option value="Tennessee">Tennessee</option>
+                <option value="Texas">Texas</option>
+                <option value="Utah">Utah</option>
+                <option value="Vermont">Vermont</option>
+                <option value="Virginia">Virginia</option>
+                <option value="Washington">Washington</option>
+                <option value="West Virginia">West Virginia</option>
+                <option value="Wisconsin">Wisconsin</option>
+                <option value="Wyoming">Wyoming</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="CustomerBillingInfo.Zip" type="number" class="form-control mb-2" id="inputZip" placeholder="Zip">
+        </div>
+    </div>
+    <input asp-for="CustomerShippingInfo.Country" type="hidden" value="USA">
+    <hr />
+    <button type="submit" class="btn btn-success">Checkout</button>
+</form>
+<div class="mt-3">
+    @Html.ActionLink("Back to Cart", "ViewCart", "Cart", null,new {@class = "btn btn-danger mr-1"})
+    @Html.ActionLink("Back to Products", "BrowseAll", "Product", null, new {@class = "btn btn-primary ml-1"})
+</div>

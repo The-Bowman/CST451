@@ -2,6 +2,7 @@
 using CST451.Models.ViewModels;
 using CST451.Models.ViewModels.Products;
 using System.Text.Json;
+using Microsoft.CodeAnalysis;
 
 namespace CST451.Controllers
 {
@@ -39,5 +40,41 @@ namespace CST451.Controllers
             ViewBag.Message = "Item added to cart successfully";
             return View("BrowseAll", oFactory.ProductHelper.GetAll());
         }
+
+        [HttpGet]
+        public IActionResult AddProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddProduct(ProductViewModel product)
+        {
+            product = oFactory.ProductHelper.AddProduct(product);
+            return View(product);
+        }
+
+        [HttpGet]
+        public IActionResult FindProductBySKU()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(ProductViewModel product)
+        {
+            product = oFactory.ProductHelper.GetOne(product);
+            product.Success = null;
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult ProcessEdit(ProductViewModel product)
+        {
+            product = oFactory.ProductHelper.EditProduct(product);
+            return View("EditProduct", product);
+        }
+
+
     }
 }

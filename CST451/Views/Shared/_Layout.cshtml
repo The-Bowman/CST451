@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CST451.styles.css" asp-append-version="true" />
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor Accessor
 </head>
 <body>
     <header>
@@ -25,8 +27,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (string.IsNullOrEmpty(Accessor.HttpContext.Session.GetString("username")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Login">Login</a>
+                            </li>
+                        } else 
+                        {
+                            if (string.IsNullOrEmpty(Accessor.HttpContext.Session.GetString("isAdmin")))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Logout">Logout</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="EditCustomer">Profile</a>
+                                </li>
+                            } else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="Logout">Logout</a>
+                                </li>
+                            }
+                            
+                        }
+                        
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="AddCustomer">Add Customer</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="AddCustomer">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Product" asp-action="BrowseAll">Browse Products</a>
@@ -37,14 +63,22 @@
                         <li>
                             <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="EmployeePortal">Employee Portal</a>
                         </li>
-                        @if (ViewBag.isAdmin != null)
+
+                        @if (!string.IsNullOrEmpty(Accessor.HttpContext.Session.GetString("isAdmin")) && Accessor.HttpContext.Session.GetString("isAdmin").ToLower().Equals("true"))
                         {
-                            if (ViewBag.isAdmin)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="AddEmployee">Add Employee</a>
-                                </li>
-                            }
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Employee Tools
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Employee" asp-action="AddEmployee">Add Employee</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Employee" asp-action="FindEmployeeByEmplID">Edit Employee</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="AddProduct">Add Product</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="FindProductBySKU">Edit Product</a></li>
+                                </ul>
+                            </li>
+
                         }
                     </ul>
                 </div>

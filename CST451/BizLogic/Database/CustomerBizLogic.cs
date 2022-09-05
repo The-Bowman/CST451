@@ -31,6 +31,7 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public CustomerDataModel AddCustomer(CustomerDataModel customer)
         {
+            
             // prepared statement setup
             string addCustomerQry = "INSERT INTO [dbo].[Customer] (Name, Address, City, State, Zip, Country, Email, Phone, Password) VALUES (@Name, @Address, @City, @State, @Zip, @Country, @Email, @Phone, @Password)";
 
@@ -135,5 +136,150 @@ namespace CST451.BizLogic.Database
                 }
             }
         }
+
+        /// <summary>
+        /// Get singular employee from db by employee ID
+        /// </summary>
+        /// <param name="dbCustomer"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public CustomerDataModel GetOne(CustomerDataModel dbCustomer)
+        {
+            // prepared statement
+            string getQry = "SELECT * FROM [dbo].[Customer] WHERE ID=@ID";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(getQry, conn))
+                {
+                    // setup parameters
+                    cmd.Parameters.AddWithValue("@ID", dbCustomer.ID);
+
+                    try
+                    {
+                        conn.Open();
+                        var reader = cmd.ExecuteReader();
+
+                        // successful result
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+
+                            // assign values
+                            dbCustomer.ID = (int)reader["ID"];
+                            dbCustomer.Name = reader["Name"].ToString();
+                            dbCustomer.Address = reader["Address"].ToString();
+                            dbCustomer.City = reader["City"].ToString();
+                            dbCustomer.State = reader["State"].ToString();
+                            dbCustomer.Zip = (int?)Convert.ToInt32(reader["Zip"]);
+                            dbCustomer.Phone = reader["Phone"].ToString();
+                            dbCustomer.Email = reader["Email"].ToString();
+                            dbCustomer.Password = reader["Password"].ToString();
+                            dbCustomer.Success = true;
+                            conn.Close();
+                            return dbCustomer;
+                        }
+
+                        // return with fail result
+                        dbCustomer.Success = false;
+                        conn.Close();
+
+                        return dbCustomer;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to add the customer\nError: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        public CustomerDataModel Update(CustomerDataModel dbCustomer)
+        {
+            string updateCustomerQry = "UPDATE [dbo].[Customer] SET Name = @Name, Address = @Address, City =  @City, State = @State, Zip = @Zip, Country = @Country, Phone = @Phone, Email = @Email, Password = @Password  WHERE ID = @ID";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(updateCustomerQry, conn))
+                {
+                    // add parameters to statement
+                    cmd.Parameters.AddWithValue("@Name", dbCustomer.Name);
+                    cmd.Parameters.AddWithValue("@Address", dbCustomer.Address);
+                    cmd.Parameters.AddWithValue("@City", dbCustomer.City);
+                    cmd.Parameters.AddWithValue("@State", dbCustomer.State);
+                    cmd.Parameters.AddWithValue("@Zip", dbCustomer.Zip);
+                    cmd.Parameters.AddWithValue("@Country", dbCustomer.Country);
+                    cmd.Parameters.AddWithValue("@Phone", dbCustomer.Phone);
+                    cmd.Parameters.AddWithValue("@Email", dbCustomer.Email);
+                    cmd.Parameters.AddWithValue("@Password", dbCustomer.Password);
+                    cmd.Parameters.AddWithValue("@ID", dbCustomer.ID);
+
+
+                    try
+                    {
+                        conn.Open();
+                        int results = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        // successful result 
+                        if (results == 1)
+                        {
+                            dbCustomer.Success = true;
+                            return dbCustomer;
+                        }
+                        // return with fail result
+                        dbCustomer.Success = false;
+                        return dbCustomer;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to edit the product\nError: " + ex.Message);
+                    }
+                }
+
+            }
+        }
+
+        public CustomerDataModel Delete(CustomerDataModel dbCustomer)
+        {
+            string deleteCustomerQry = "DELETE FROM [dbo].[Customer] WHERE ID = @ID";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(deleteCustomerQry, conn))
+                {
+                    // add parameters to statement
+                    cmd.Parameters.AddWithValue("@ID", dbCustomer.ID);
+
+                    try
+                    {
+                        conn.Open();
+                        int results = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        // successful result 
+                        if (results == 1)
+                        {
+                            dbCustomer.Success = true;
+                            return dbCustomer;
+                        }
+                        // return with fail result
+                        dbCustomer.Success = false;
+                        return dbCustomer;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to edit the product\nError: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }
+

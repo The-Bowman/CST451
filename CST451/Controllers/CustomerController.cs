@@ -61,23 +61,55 @@ namespace CST451.Controllers
         public IActionResult Login(CustomerViewModel customer)
         {
             customer = oFactory.CustomerHelper.Login(customer);
-            HttpContext.Session.SetString("username", customer.Name);            
+            HttpContext.Session.SetString("username", customer.Name);
             HttpContext.Session.SetString("userID", customer.ID.ToString());
             HttpContext.Session.SetString("cart", JsonSerializer.Serialize(new CartViewModel()));
             return View("LoginResult", customer);
         }
 
+        /// <summary>
+        /// Remove session keys and destroy cart
+        /// </summary>
+        /// <returns>Index page</returns>
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("username");
+            HttpContext.Session.Remove("userID");
+            HttpContext.Session.Remove("cart");
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Return cart from session key
+        /// and parse into View object
+        /// then pass object to view
+        /// </summary>
+        /// <returns>ViewCart view</returns>
         [HttpGet]
         public IActionResult GetCart()
         {
             CartViewModel cart;
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("cart")))
             {
-                 cart = new CartViewModel();
-                return View("Cart", cart);
+                cart = new CartViewModel();
             }
-            cart = JsonSerializer.Deserialize<CartViewModel>(HttpContext.Session.GetString("cart"));
-            return View("Cart");
+            else
+            {
+                cart = JsonSerializer.Deserialize<CartViewModel>(HttpContext.Session.GetString("cart"));
+            }
+
+            return View("Cart", cart);
+        }
+
+        [HttpGet]
+        public IActionResult EditCustomer()
+        {
+            CustomerViewModel customer = new CustomerViewModel()
+            {
+                ID = Convert.ToInt32(HttpContext.Session.GetString("userID"))
+            };
+            customer = oFactory.CustomerHelper.GetOne(customer);
+            return View(customer);
         }
     }
 }

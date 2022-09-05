@@ -11,5 +11,7 @@ namespace CST451.Helpers
         {
             get { return Configuration.GetConnectionString("dbPCParts");}
         }
+
+        internal string Connection() => Configuration.GetConnectionString("dbPCParts");
     }
 }

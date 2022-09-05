@@ -1,32 +1,43 @@
 ﻿@model CST451.Models.Users.EmployeeViewModel
 
 @{
-    ViewData["Title"] = "AddEmployee";
+    ViewData["Title"] = "EditEmployee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>AddEmployee</h1>
+@if (Model.Success != null)
+{
+    if (Model.Success == true)
+    {
+        <p class="alert alert-success" id="pass">Employee Edited Successfully</p>
+    } else 
+    {
+        <p class="alert alert-danger" id="fail">Employee Edit Failed</p>
+    }   
+}
+
+<h1>EditEmployee</h1>
 
 <h4>EmployeeViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddEmployee" onsubmit="return checkPass()" method="post">
+        <form asp-action="ProcessEmployeeEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           <input type="hidden" asp-for="ID" value="@Model.ID" />
+           <input type="hidden" asp-for="IsAdmin" value="@Model.IsAdmin" />
+           <input type="hidden" asp-for="Country" value="USA" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" required />
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" required />
-                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
                 <input asp-for="City" class="form-control" required />
-                <span asp-validation-for="City" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="State" class="control-label"></label>
@@ -86,50 +97,29 @@
             <div class="form-group">
                 <label asp-for="Zip" class="control-label"></label>
                 <input asp-for="Zip" class="form-control" required />
-                <span asp-validation-for="Zip" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Country" value="USA" />
+           
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" required />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Email" class="form-control" required/>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" required />
-                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" required />
-                <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" id="pass1" class="form-control" required />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <input asp-for="Password" class="form-control" required />
             </div>
+           
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" id="pass2" class="form-control" required />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-2">
-                <input type="submit" value="Add Employee" class="btn btn-primary m-2" />
+                <input type="submit" value="Save" class="btn btn-primary m-2" />
             </div>
         </form>
     </div>
 </div>
-
-<script>
-    
-    function checkPass(){
-        var pass1 = document.getElementById("pass1").value;
-        var pass2 = document.getElementById("pass2").value;
-        submitOK = false;
-        if (pass1 === pass2){
-            submitOK = true;
-        }
-        return submitOK;
-    }
-</script>

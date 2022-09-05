@@ -1,0 +1,74 @@
+﻿@model CST451.Models.ViewModels.Products.ProductViewModel
+
+@{
+    ViewData["Title"] = "EditProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Success != null)
+{
+    if (Model.Success == true)
+    {
+        <p class="alert alert-success" id="pass">Product Edited Successfully</p>
+    } else 
+    {
+        <p class="alert alert-danger" id="fail">Product Edit Failed</p>
+    }   
+}
+
+
+
+<h1>EditProduct</h1>
+
+<h4>ProductViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ProcessEdit">
+            <input type="hidden" asp-for="ID" value="@Model.ID" />
+            <input type="hidden" asp-for="ImagePath" value="@Model.ImagePath" required />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" required />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Compatibility" class="control-label"></label>
+                    <input asp-for="Compatibility" class="form-control" required/>
+                    <span asp-validation-for="Compatibility" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" required/>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var msg = @Html.Raw(Model.Success);
+        if (msg === "false") {
+            document.getElementById("fail").hidden = false;
+        }
+        if (msg === "true") {
+            document.getElementById("pass").hidden = false;
+        }
+    });
+</script>
+

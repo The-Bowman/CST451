@@ -62,6 +62,17 @@
             }
         }
 
+        private Helpers.CheckoutHelper _checkoutHelper;
+        internal Helpers.CheckoutHelper CheckoutHelper
+        {
+            get
+            {
+                if (_checkoutHelper == null)
+                    _checkoutHelper = new Helpers.CheckoutHelper();
+                return _checkoutHelper;
+            }
+        }
+
         private BizLogic.Database.CustomerBizLogic _customerBizLogic;
         internal BizLogic.Database.CustomerBizLogic CustomerBizLogic
         {
@@ -92,6 +103,17 @@
                 if (_employeeBizLogic == null)
                     _employeeBizLogic = new BizLogic.Database.EmployeeBizLogic(this);
                 return _employeeBizLogic;
+            }
+        }
+
+        private BizLogic.Database.CheckoutBizLogic _checkoutBizLogic;
+        internal BizLogic.Database.CheckoutBizLogic CheckoutBizLogic
+        {
+            get
+            {
+                if (_checkoutBizLogic == null)
+                    _checkoutBizLogic = new BizLogic.Database.CheckoutBizLogic(this);
+                return _checkoutBizLogic;
             }
         }
     }

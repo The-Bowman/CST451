@@ -1,5 +1,6 @@
 ﻿using CST451.Controllers;
 using CST451.Data.DataModel.ProductDataModels;
+using CST451.Data.DataModel.UserDataModels;
 using System.Data.SqlClient;
 
 namespace CST451.BizLogic.Database
@@ -178,6 +179,86 @@ namespace CST451.BizLogic.Database
                     {
                         conn.Close();
                         throw new Exception("An error occured trying to add the customer\nError: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        public ProductDataModel Edit(ProductDataModel dbProduct)
+        {
+            string addCustomerQry = "UPDATE [dbo].[Product] SET Name = @Name, Description = @Description, Compatibility =  @Compatibility, Price = @Price WHERE ID = @ID";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
+                {
+                    // add parameters to statement
+                    cmd.Parameters.AddWithValue("@Name", dbProduct.Name);
+                    cmd.Parameters.AddWithValue("@Description", dbProduct.Description);
+                    cmd.Parameters.AddWithValue("@Compatibility", dbProduct.Compatibility);
+                    cmd.Parameters.AddWithValue("@Price", dbProduct.Price);
+                    cmd.Parameters.AddWithValue("@ID", dbProduct.ID);
+
+
+                    try
+                    {
+                        conn.Open();
+                        int results = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        // successful result 
+                        if (results == 1)
+                        {
+                            dbProduct.Success = true;
+                            return dbProduct;
+                        }
+                        // return with fail result
+                        dbProduct.Success = false;
+                        return dbProduct;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to edit the product\nError: " + ex.Message);
+                    }
+                }
+
+            }
+        }
+
+        public ProductDataModel Delete(ProductDataModel dbProduct)
+        {
+            string deleteProductQry = "DELETE FROM [dbo].[Product] WHERE ID = @ID";
+
+            using (SqlConnection conn = new SqlConnection(_sql))
+            {
+                using (SqlCommand cmd = new SqlCommand(deleteProductQry, conn))
+                {
+                    // add parameters to statement
+                    cmd.Parameters.AddWithValue("@ID", dbProduct.ID);
+
+                    try
+                    {
+                        conn.Open();
+                        int results = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        // successful result 
+                        if (results == 1)
+                        {
+                            dbProduct.Success = true;
+                            return dbProduct;
+                        }
+                        // return with fail result
+                        dbProduct.Success = false;
+                        return dbProduct;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to edit the product\nError: " + ex.Message);
                     }
                 }
             }

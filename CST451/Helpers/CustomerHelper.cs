@@ -9,7 +9,7 @@ namespace CST451.Helpers
         /// Allows access to Factory
         /// </summary>
         private Factory _factory;
-        internal Factory _Factory
+        internal Factory oFactory
         {
             get
             {
@@ -27,7 +27,7 @@ namespace CST451.Helpers
         public CustomerViewModel AddCustomer(CustomerViewModel customer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(customer);
-            dmCustomer = _Factory.CustomerBizLogic.AddCustomer(dmCustomer);
+            dmCustomer = oFactory.CustomerBizLogic.AddCustomer(dmCustomer);
             customer = ParseDMCustomerToVMCustomer(dmCustomer);
             return customer;
         }
@@ -40,7 +40,28 @@ namespace CST451.Helpers
         public CustomerViewModel Login(CustomerViewModel vmCustomer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
-            dmCustomer = _Factory.CustomerBizLogic.LoginCustomer(dmCustomer);
+            dmCustomer = oFactory.CustomerBizLogic.LoginCustomer(dmCustomer);
+            return ParseDMCustomerToVMCustomer(dmCustomer);
+        }
+
+        public CustomerViewModel GetOne(CustomerViewModel vmCustomer)
+        {
+            CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
+            dmCustomer = oFactory.CustomerBizLogic.GetOne(dmCustomer);
+            return ParseDMCustomerToVMCustomer(dmCustomer);
+        }
+
+        public CustomerViewModel EditCustomer(CustomerViewModel vmCustomer)
+        {
+            CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
+            dmCustomer = oFactory.CustomerBizLogic.Update(dmCustomer);
+            return ParseDMCustomerToVMCustomer(dmCustomer);
+        }
+
+        public CustomerViewModel DeleteCustomer(CustomerViewModel vmCustomer)
+        {
+            CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
+            dmCustomer = oFactory.CustomerBizLogic.Delete(dmCustomer);
             return ParseDMCustomerToVMCustomer(dmCustomer);
         }
 

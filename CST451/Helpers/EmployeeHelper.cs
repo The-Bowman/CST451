@@ -28,9 +28,29 @@ namespace CST451.Helpers
         public EmployeeViewModel AddEmployee(EmployeeViewModel employee, bool isAdmin)
         {
             EmployeeDataModel dmEmployee= ParseVMEmployeeToDMEmployee(employee);
-            dmEmployee = oFactory.EmployeeBizLogic.AddEmployee(dmEmployee, isAdmin);
+            dmEmployee = oFactory.EmployeeBizLogic.Add(dmEmployee, isAdmin);
             employee = ParseDMEmployeeToVMEmployee(dmEmployee);
             return employee;
+        }
+
+        /// <summary>
+        /// Return a single Employee from employee ID
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal EmployeeViewModel GetOne(EmployeeViewModel vmEmployee)
+        {
+            EmployeeDataModel dbEmployee = ParseVMEmployeeToDMEmployee(vmEmployee);
+            dbEmployee = oFactory.EmployeeBizLogic.GetOne(dbEmployee);
+            return ParseDMEmployeeToVMEmployee(dbEmployee);
+        }
+
+        internal EmployeeViewModel UpdateEmployee(EmployeeViewModel vmEmployee)
+        {
+            EmployeeDataModel dbEmployee = ParseVMEmployeeToDMEmployee(vmEmployee);
+            dbEmployee = oFactory.EmployeeBizLogic.Update(dbEmployee);
+            return ParseDMEmployeeToVMEmployee(dbEmployee);
         }
 
         /// <summary>
@@ -41,7 +61,7 @@ namespace CST451.Helpers
         public EmployeeViewModel Login(EmployeeViewModel vmEmployee)
         {
             EmployeeDataModel dmEmployee = ParseVMEmployeeToDMEmployee(vmEmployee);
-            dmEmployee = oFactory.EmployeeBizLogic.LoginEmployee(dmEmployee);
+            dmEmployee = oFactory.EmployeeBizLogic.Login(dmEmployee);
             return ParseDMEmployeeToVMEmployee(dmEmployee);
         }
 
@@ -66,7 +86,9 @@ namespace CST451.Helpers
                 Email = vmEmployee.Email,
                 Phone = vmEmployee.Phone,
                 Username = vmEmployee.Username,
-                Password = vmEmployee.Password
+                Password = vmEmployee.Password,
+                Success = vmEmployee.Success,
+                IsAdmin = vmEmployee.IsAdmin,
             };
             if (vmEmployee.ID != null)
                 dmEmployee.ID = vmEmployee.ID;
@@ -102,7 +124,6 @@ namespace CST451.Helpers
             return vmEmployee;
         }
 
-       
         #endregion
 
 

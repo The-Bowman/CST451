@@ -31,5 +31,10 @@ namespace CST451.Models.ViewModels
             }
             return total;
         }
+
+        public bool isEmpty()
+        {
+            return Products.Count == 0;
+        }
     }
 }

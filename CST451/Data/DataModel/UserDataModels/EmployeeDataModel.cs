@@ -14,7 +14,7 @@
         public bool? IsAdmin { get; set; }
         public string Password { get; set; }
         public string Username { get; set; }
-        public bool Success { get; set; }
+        public bool? Success { get; set; }
 
         public EmployeeDataModel()
         {

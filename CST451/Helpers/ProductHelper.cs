@@ -60,6 +60,13 @@ namespace CST451.Helpers
             return vmProduct;
         }
 
+        internal ProductViewModel EditProduct(ProductViewModel vmProduct)
+        {
+            ProductDataModel dbProduct = ParseVMtoDB(vmProduct);
+            dbProduct = oFactory.ProductBizLogic.Edit(dbProduct);
+            return ParseDBtoVM(dbProduct);
+        }
+
         #region Parsing
         /// <summary>
         /// Parse from View and Data layers
@@ -74,6 +81,8 @@ namespace CST451.Helpers
                 Description = vmProduct.Description,
                 Price = vmProduct.Price,
                 Compatibility = vmProduct.Compatibility,
+                ImagePath = vmProduct.ImagePath,
+                Success = vmProduct.Success,
             };
             if (vmProduct.ID != null)
                 dbProduct.ID = vmProduct.ID;
@@ -94,7 +103,8 @@ namespace CST451.Helpers
                 Description = dbProduct.Description,
                 Price = dbProduct.Price,
                 Compatibility = dbProduct.Compatibility,
-                ImagePath = dbProduct.ImagePath
+                ImagePath = dbProduct.ImagePath,
+                Success = dbProduct.Success,
             };
             if (dbProduct.ID != null)
                 vmProduct.ID = dbProduct.ID;

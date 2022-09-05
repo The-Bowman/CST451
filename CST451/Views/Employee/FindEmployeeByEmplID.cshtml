@@ -1,0 +1,26 @@
+﻿@model CST451.Models.Users.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "FindEmployeeByEmplID";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Employee Search</h1>
+
+<h4>Enter Employee ID</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditEmployee">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label">Employee ID: </label>
+                <input asp-for="ID" class="form-control" required />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary mt-2" />
+            </div>
+        </form>
+    </div>
+</div>

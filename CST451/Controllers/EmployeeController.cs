@@ -45,8 +45,17 @@ namespace CST451.Controllers
             HttpContext.Session.SetString("isAdmin", employee.IsAdmin.ToString());
             ViewBag.emplid = employee.ID;
             ViewBag.isEmployee = true;
-            ViewBag.isAdmin = employee.IsAdmin;
+            ViewBag.isAdmin = HttpContext.Session.GetString("isAdmin").ToString();
             return View("LoginResult", employee);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("username");
+            HttpContext.Session.Remove("userID");
+            HttpContext.Session.Remove("isAdmin");
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
@@ -67,19 +76,27 @@ namespace CST451.Controllers
         [HttpPost]
         public IActionResult AddEmployee(EmployeeViewModel employee)
         {
-            bool isAdmin =Convert.ToBoolean(HttpContext.Session.GetString("isAdmin"));
+            bool isAdmin = Convert.ToBoolean(HttpContext.Session.GetString("isAdmin"));
             employee = oFactory.EmployeeHelper.AddEmployee(employee, isAdmin);
             return View("DisplayEmployee", employee);
+        }
+
+        [HttpGet]
+        public IActionResult FindEmployeeByEmplID()
+        {
+            return View();  
         }
 
         /// <summary>
         /// View to add a product
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public IActionResult AddProduct()
+        [HttpPost]
+        public IActionResult EditEmployee(EmployeeViewModel employee)
         {
-            return View();
+            employee = oFactory.EmployeeHelper.GetOne(employee);
+            employee.Success = null;
+            return View(employee);
         }
 
         /// <summary>
@@ -88,10 +105,10 @@ namespace CST451.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult AddProduct(ProductViewModel product)
+        public IActionResult ProcessEmployeeEdit(EmployeeViewModel employee)
         {
-            product = oFactory.ProductHelper.AddProduct(product);
-            return View(product);
+            employee = oFactory.EmployeeHelper.UpdateEmployee(employee);
+            return View("EditEmployee", employee);
         }
     }
 }
