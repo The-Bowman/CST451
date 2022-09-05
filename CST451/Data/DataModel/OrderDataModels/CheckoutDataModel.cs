@@ -16,6 +16,7 @@ namespace CST451.Data.DataModel.OrderDataModels
         public string ExpirationDate { get; set; }
         public string CreditCardNumber { get; set; }
         public int? CVV { get; set; }
+        public bool? Success { get; set; }
 
     }
 }

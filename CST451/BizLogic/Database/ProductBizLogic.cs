@@ -7,9 +7,9 @@ namespace CST451.BizLogic.Database
 {
     public class ProductBizLogic
     {
-        private string _sql = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=dbPCPARTS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+       
         private Factory _factory;
-        internal Factory _Factory
+        internal Factory oFactory
         {
             get
             {
@@ -32,10 +32,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public ProductDataModel GetOne(ProductDataModel product)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement
             string getQry = "SELECT * FROM [dbo].[Product] WHERE ID=@ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(getQry, conn))
                 {
@@ -87,11 +89,13 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public List<ProductDataModel> GetAll()
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string getQry = "SELECT * FROM [dbo].[Product];";
 
             List<ProductDataModel> productList = new List<ProductDataModel>();
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(getQry, conn))
                 {
@@ -144,10 +148,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public ProductDataModel Add(ProductDataModel dbProduct)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement setup
             string addCustomerQry = "INSERT INTO [dbo].[Product] (Name, Description, Compatibility, Price) VALUES (@Name, @Description, @Compatibility, @Price)";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
                 {
@@ -186,9 +192,11 @@ namespace CST451.BizLogic.Database
 
         public ProductDataModel Edit(ProductDataModel dbProduct)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string addCustomerQry = "UPDATE [dbo].[Product] SET Name = @Name, Description = @Description, Compatibility =  @Compatibility, Price = @Price WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
                 {
@@ -229,9 +237,11 @@ namespace CST451.BizLogic.Database
 
         public ProductDataModel Delete(ProductDataModel dbProduct)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string deleteProductQry = "DELETE FROM [dbo].[Product] WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(deleteProductQry, conn))
                 {

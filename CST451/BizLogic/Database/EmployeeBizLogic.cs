@@ -5,8 +5,7 @@ namespace CST451.BizLogic.Database
 {
     public class EmployeeBizLogic
     {
-        // Connection string - temporary solution until appsettings.json is resolved
-        private string _sql = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=dbPCPARTS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+       
         private Factory _factory;
         internal Factory oFactory
         {
@@ -37,10 +36,12 @@ namespace CST451.BizLogic.Database
                 return employee;
             }
 
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement setup
             string addEmployeeQry = "INSERT INTO [dbo].[Employee] (Name, Address, City, State, Zip, Country, Username, Email, Phone, IsAdmin, Password) VALUES (@Name, @Address, @City, @State, @Zip, @Country, @Username, @Email, @Phone, @IsAdmin, @Password)";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(addEmployeeQry, conn))
                 {
@@ -91,10 +92,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public EmployeeDataModel Login(EmployeeDataModel employee)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement
             string loginQry = "SELECT * FROM [dbo].[Employee] WHERE Username=@Username and Password=@Password";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(loginQry, conn))
                 {
@@ -152,10 +155,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public EmployeeDataModel GetOne(EmployeeDataModel dbEmployee)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement
             string getQry = "SELECT * FROM [dbo].[Employee] WHERE ID=@ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(getQry, conn))
                 {
@@ -207,9 +212,11 @@ namespace CST451.BizLogic.Database
 
         public EmployeeDataModel Update(EmployeeDataModel dbEmployee)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string updateEmployeeQry = "UPDATE [dbo].[Employee] SET Name = @Name, Address = @Address, City =  @City, State = @State, Zip = @Zip, Country = @Country, Phone = @Phone, Email = @Email, Username = @Username, Password = @Password  WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(updateEmployeeQry, conn))
                 {
@@ -256,9 +263,11 @@ namespace CST451.BizLogic.Database
 
         public EmployeeDataModel Delete(EmployeeDataModel dbEmployee)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string deleteEmployeeQry = "DELETE FROM [dbo].[Employee] WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(deleteEmployeeQry, conn))
                 {

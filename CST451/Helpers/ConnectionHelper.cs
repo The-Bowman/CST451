@@ -5,13 +5,14 @@ namespace CST451.Helpers
     public class ConnectionHelper
     {
 
-        private readonly IConfiguration Configuration;
-
-        public string dbConnection
+        private IConfiguration Configuration;
+        
+        public string GetConnection()
         {
-            get { return Configuration.GetConnectionString("dbPCParts");}
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false);
+            Configuration = builder.Build();
+            string con = Configuration.GetValue<string>("ConnectionStrings:dbPCParts");
+            return con; 
         }
-
-        internal string Connection() => Configuration.GetConnectionString("dbPCParts");
     }
 }

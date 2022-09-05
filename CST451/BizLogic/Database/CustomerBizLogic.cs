@@ -5,10 +5,9 @@ namespace CST451.BizLogic.Database
 {
     public class CustomerBizLogic
     {
-        // Connection string - temporary solution until appsettings.json is resolved
-        private string _sql = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=dbPCPARTS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+      
         private Factory _factory;
-        internal Factory _Factory
+        internal Factory oFactory
         {
             get
             {
@@ -31,11 +30,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public CustomerDataModel AddCustomer(CustomerDataModel customer)
         {
-            
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement setup
             string addCustomerQry = "INSERT INTO [dbo].[Customer] (Name, Address, City, State, Zip, Country, Email, Phone, Password) VALUES (@Name, @Address, @City, @State, @Zip, @Country, @Email, @Phone, @Password)";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(addCustomerQry, conn))
                 {
@@ -85,10 +85,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public CustomerDataModel LoginCustomer(CustomerDataModel customer)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement
             string loginQry = "SELECT * FROM [dbo].[Customer] WHERE Email=@Email and Password=@Password";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(loginQry, conn))
                 {
@@ -145,10 +147,12 @@ namespace CST451.BizLogic.Database
         /// <exception cref="Exception"></exception>
         public CustomerDataModel GetOne(CustomerDataModel dbCustomer)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             // prepared statement
             string getQry = "SELECT * FROM [dbo].[Customer] WHERE ID=@ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(getQry, conn))
                 {
@@ -198,9 +202,11 @@ namespace CST451.BizLogic.Database
 
         public CustomerDataModel Update(CustomerDataModel dbCustomer)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string updateCustomerQry = "UPDATE [dbo].[Customer] SET Name = @Name, Address = @Address, City =  @City, State = @State, Zip = @Zip, Country = @Country, Phone = @Phone, Email = @Email, Password = @Password  WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(updateCustomerQry, conn))
                 {
@@ -246,9 +252,11 @@ namespace CST451.BizLogic.Database
 
         public CustomerDataModel Delete(CustomerDataModel dbCustomer)
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
             string deleteCustomerQry = "DELETE FROM [dbo].[Customer] WHERE ID = @ID";
 
-            using (SqlConnection conn = new SqlConnection(_sql))
+            using (SqlConnection conn = new SqlConnection(dbConn))
             {
                 using (SqlCommand cmd = new SqlCommand(deleteCustomerQry, conn))
                 {

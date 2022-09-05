@@ -15,6 +15,7 @@ namespace CST451.Models.ViewModels.Checkout
         public string ExpirationDate { get; set; }
         public string CreditCardNumber { get; set; }
         public int? CVV { get; set; }
+        public bool? Success { get; set; }
 
     }
 }

@@ -3,6 +3,7 @@ using CST451.Data.DataModel.UserDataModels;
 using CST451.Models.Orders;
 using CST451.Models.Users;
 using CST451.Models.ViewModels.Checkout;
+using System.Linq;
 
 namespace CST451.Helpers
 {
@@ -23,25 +24,53 @@ namespace CST451.Helpers
             }
         }
 
-        //public CheckoutModel AddOrder(CheckoutModel vmCheckout)
-        //{
+        public CheckoutModel AddOrder(CheckoutModel vmCheckout)
+        {
+            CheckoutDataModel dbCheckout = ParseVMCheckouttoDMCheckout(vmCheckout);
+            dbCheckout = oFactory.CheckoutBizLogic.AddOrder(dbCheckout);
+            return ParseDMCheckouttoVMCheckout(dbCheckout);
 
-        //}
+        }
 
 
 
         #region CheckoutModel Parsing
 
-        //private CheckoutDataModel ParseVMCheckouttoDMCheckout(CheckoutModel vmCheckout)
-        //{
-        //    CheckoutDataModel dbCheckout = new CheckoutDataModel()
-        //    {
-        //        CustomerShippingInfo = ParseVMCustomerToDMCustomer(vmCheckout.CustomerShippingInfo),
-        //        CustomerBillingInfo = ParseVMCustomerToDMCustomer(vmCheckout.CustomerBillingInfo),
-        //        Order = 
+        private CheckoutDataModel ParseVMCheckouttoDMCheckout(CheckoutModel vmCheckout)
+        {
+            CheckoutDataModel dbCheckout = new CheckoutDataModel()
+            {
+                CustomerShippingInfo = ParseVMCustomerToDMCustomer(vmCheckout.CustomerShippingInfo),
+                CustomerBillingInfo = ParseVMCustomerToDMCustomer(vmCheckout.CustomerBillingInfo),
+                Order = ParseVMOrdertoDMOrder(vmCheckout.Order),
+                Cart = vmCheckout.Cart,
+                CreditCardName = vmCheckout.CustomerBillingInfo.Name,
+                ExpirationDate = vmCheckout.ExpirationDate,
+                CreditCardNumber = vmCheckout.CreditCardNumber,
+                OrderLines = new List<OrderLineDataModel>(),
+                Success = vmCheckout.Success,
+            };
+            dbCheckout.OrderLines.AddRange(vmCheckout.OrderLines.Select(item => ParseVMOrderLinetoDMOrderLine(item)));
+            return dbCheckout;
+        }
 
-        //    }
-        //}
+        private CheckoutModel ParseDMCheckouttoVMCheckout(CheckoutDataModel dbCheckout)
+        {
+            CheckoutModel vmCheckout = new CheckoutModel()
+            {
+                CustomerShippingInfo = ParseDMCustomerToVMCustomer(dbCheckout.CustomerShippingInfo),
+                CustomerBillingInfo = ParseDMCustomerToVMCustomer(dbCheckout.CustomerBillingInfo),
+                Order = ParseDMOrdertoVMOrder(dbCheckout.Order),
+                Cart = dbCheckout.Cart,
+                CreditCardName = dbCheckout.CreditCardName,
+                ExpirationDate = dbCheckout.ExpirationDate,
+                CreditCardNumber = dbCheckout.CreditCardNumber,
+                OrderLines = new List<OrderLineViewModel>(),
+                Success = dbCheckout.Success,
+            };
+            vmCheckout.OrderLines.AddRange(dbCheckout.OrderLines.Select(item => ParseDMOrderLinetoVMOrderLine(item)));
+            return vmCheckout;  
+        }
 
 
         #endregion
@@ -118,7 +147,7 @@ namespace CST451.Helpers
             return dbOrderLine;
         }
 
-        private OrderLineViewModel ParseVMOrderLinetoDMOrderLine(OrderLineDataModel dbOrderLine)
+        private OrderLineViewModel ParseDMOrderLinetoVMOrderLine(OrderLineDataModel dbOrderLine)
         {
             OrderLineViewModel vmOrderLine = new OrderLineViewModel()
             {
