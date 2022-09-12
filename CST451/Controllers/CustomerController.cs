@@ -122,5 +122,12 @@ namespace CST451.Controllers
             customer = oFactory.CustomerHelper.GetOne(customer);
             return View(customer);
         }
+
+        [HttpPost]
+        public IActionResult EditCustomer(CustomerViewModel customer)
+        {
+            customer = oFactory.CustomerHelper.EditCustomer(customer);
+            return View("EditCustomer", customer);
+        }
     }
 }
