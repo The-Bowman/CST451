@@ -1,0 +1,2 @@
+These scripts will generate the necessary tables and database needed to run the CST451 .NET 6 application
+Please replace FILENAME = N'path' with appropriate filepath to creating the database in DropandCreateDBScript.sql
