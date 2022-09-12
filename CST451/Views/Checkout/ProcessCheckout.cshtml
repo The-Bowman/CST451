@@ -11,39 +11,53 @@
     <h4>CheckoutModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreditCardName)
+        <dt class="col-sm-2">
+            <label asp-for="CustomerShippingInfo">Ship To:</label>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreditCardName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerShippingInfo.Name)
+            <div>
+                @Html.DisplayFor(model => model.CustomerShippingInfo.Address)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerShippingInfo.City)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerShippingInfo.State)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerShippingInfo.Zip)
+            </div>
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpirationDate)
+        <dt class="col-sm-2">
+            <label asp-for="CustomerBillingInfo">Bill To:</label>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExpirationDate)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerBillingInfo.Name)
+            <div>
+                @Html.DisplayFor(model => model.CustomerBillingInfo.Address)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerBillingInfo.City)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerBillingInfo.State)
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.CustomerBillingInfo.Zip)
+            </div>
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        <dt class="col-sm-2">
+            <label asp-for="Order">Order ID:</label>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreditCardNumber)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.OrderID)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CVV)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CVV)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Success)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Success)
         </dd>
     </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
 </div>

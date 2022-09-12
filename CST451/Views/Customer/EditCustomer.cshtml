@@ -5,34 +5,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>EditCustomer</h1>
+<h1>Your Profile</h1>
 
-<h4>CustomerViewModel</h4>
+<h4>Edit Your Profile</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditCustomer">
+        <form asp-action="EditCustomer" class="needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            <input type="hidden" asp-for="ID" value="@Model.ID" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" required />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Name" class="control-label" for="name"></label>
+                <input asp-for="Name" class="form-control" id="name" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Name Required</div>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" required />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <label asp-for="Address" class="control-label" for="address"></label>
+                <input asp-for="Address" class="form-control" id="address" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Address Required</div>
             </div>
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
                 <input asp-for="City" class="form-control" required />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">City Required</div>
             </div>
             <div class="form-group">
                 <label asp-for="State" class="control-label"></label>
                 <select asp-for="State" id="inputState" class="form-control mb-2" required>
-                    <option selected>State...</option>
+                    <option value="" disabled selected>Select One...</option>
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>
                     <option value="Arizona">Arizona</option>
@@ -86,34 +89,72 @@
             </div>
             <div class="form-group">
                 <label asp-for="Zip" class="control-label"></label>
-                <input asp-for="Zip" class="form-control" required />
-                <span asp-validation-for="Zip" class="text-danger"></span>
+                <input asp-for="Zip" min="10000" max="99999" class="form-control" id="zip" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Enter a Valid Zip</div>
             </div>
             <input type="hidden" asp-for="Country" value="USA" />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" required />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input type="email" asp-for="Email" class="form-control" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Email Required</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" class="form-control" id="pass1" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Passwords Must Match</div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" class="form-control" id="pass2" required oninput="SetValidityPass()" />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Passwords Must Match</div>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" required/>
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <input type="tel" asp-for="Phone" class="form-control" id="phone" required />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Phone Required</div>
             </div>
-            
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Success" /> @Html.DisplayNameFor(model => model.Success)
-                </label>
-            </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success m-2" id="submit" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
 
+    function SetValidityPass() {
+        var pass1 = document.getElementById("pass1").value;
+        var pass2 = document.getElementById("pass2").value;
+
+        if (pass1 != pass2) {
+            document.getElementById("submit").disabled = true;
+        } else {
+            document.getElementById("submit").disabled = false;
+        }
+
+    }
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

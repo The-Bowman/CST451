@@ -7,6 +7,10 @@ namespace CST451.Helpers
 
         private IConfiguration Configuration;
         
+        /// <summary>
+        /// Gets Connection string from appsettings.json
+        /// </summary>
+        /// <returns>connection string</returns>
         public string GetConnection()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false);

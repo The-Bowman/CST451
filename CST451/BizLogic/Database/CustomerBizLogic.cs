@@ -200,6 +200,12 @@ namespace CST451.BizLogic.Database
             }
         }
 
+        /// <summary>
+        /// Update Customer in DB
+        /// </summary>
+        /// <param name="dbCustomer"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public CustomerDataModel Update(CustomerDataModel dbCustomer)
         {
             string dbConn = oFactory.ConnectionHelper.GetConnection();
@@ -250,6 +256,12 @@ namespace CST451.BizLogic.Database
             }
         }
 
+        /// <summary>
+        /// Delete customer from DB
+        /// </summary>
+        /// <param name="dbCustomer"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public CustomerDataModel Delete(CustomerDataModel dbCustomer)
         {
             string dbConn = oFactory.ConnectionHelper.GetConnection();

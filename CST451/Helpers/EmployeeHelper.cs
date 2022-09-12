@@ -20,18 +20,6 @@ namespace CST451.Helpers
             }
         }
 
-        /// <summary>
-        /// Reaches out to BizLogic layer to add customer to database
-        /// </summary>
-        /// <param name="employee">CustomerViewModel</param>
-        /// <returns>CustomerViewModel</returns>
-        public EmployeeViewModel AddEmployee(EmployeeViewModel employee, bool isAdmin)
-        {
-            EmployeeDataModel dmEmployee= ParseVMEmployeeToDMEmployee(employee);
-            dmEmployee = oFactory.EmployeeBizLogic.Add(dmEmployee, isAdmin);
-            employee = ParseDMEmployeeToVMEmployee(dmEmployee);
-            return employee;
-        }
 
         /// <summary>
         /// Return a single Employee from employee ID
@@ -46,10 +34,43 @@ namespace CST451.Helpers
             return ParseDMEmployeeToVMEmployee(dbEmployee);
         }
 
-        internal EmployeeViewModel UpdateEmployee(EmployeeViewModel vmEmployee)
+        /// <summary>
+        /// Gets all employees from DB
+        /// </summary>
+        /// <returns></returns>
+        internal List<EmployeeViewModel> GetAll()
+        {
+            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
+
+            employees.AddRange(oFactory.EmployeeBizLogic.GetAll().Select(x => ParseDMEmployeeToVMEmployee(x)));
+
+            return employees;
+        }
+
+
+        /// <summary>
+        /// Reaches out to BizLogic layer to add customer to database
+        /// </summary>
+        /// <param name="employee">CustomerViewModel</param>
+        /// <returns>CustomerViewModel</returns>
+        public EmployeeViewModel AddEmployee(EmployeeViewModel employee, bool isAdmin)
+        {
+            EmployeeDataModel dmEmployee= ParseVMEmployeeToDMEmployee(employee);
+            dmEmployee = oFactory.EmployeeBizLogic.Add(dmEmployee, isAdmin);
+            employee = ParseDMEmployeeToVMEmployee(dmEmployee);
+            return employee;
+        }
+
+        /// <summary>
+        /// Update employee record in DB
+        /// </summary>
+        /// <param name="vmEmployee"></param>
+        /// <param name="isAdmin"></param>
+        /// <returns></returns>
+        internal EmployeeViewModel UpdateEmployee(EmployeeViewModel vmEmployee, bool isAdmin)
         {
             EmployeeDataModel dbEmployee = ParseVMEmployeeToDMEmployee(vmEmployee);
-            dbEmployee = oFactory.EmployeeBizLogic.Update(dbEmployee);
+            dbEmployee = oFactory.EmployeeBizLogic.Update(dbEmployee, isAdmin);
             return ParseDMEmployeeToVMEmployee(dbEmployee);
         }
 
@@ -64,7 +85,6 @@ namespace CST451.Helpers
             dmEmployee = oFactory.EmployeeBizLogic.Login(dmEmployee);
             return ParseDMEmployeeToVMEmployee(dmEmployee);
         }
-
 
         #region "Parsing
 
@@ -125,7 +145,5 @@ namespace CST451.Helpers
         }
 
         #endregion
-
-
     }
 }

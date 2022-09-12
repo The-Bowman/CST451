@@ -190,6 +190,12 @@ namespace CST451.BizLogic.Database
             }
         }
 
+        /// <summary>
+        /// Update Product data in DB
+        /// </summary>
+        /// <param name="dbProduct"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public ProductDataModel Edit(ProductDataModel dbProduct)
         {
             string dbConn = oFactory.ConnectionHelper.GetConnection();
@@ -235,6 +241,12 @@ namespace CST451.BizLogic.Database
             }
         }
 
+        /// <summary>
+        /// Delete Product from DB
+        /// </summary>
+        /// <param name="dbProduct"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public ProductDataModel Delete(ProductDataModel dbProduct)
         {
             string dbConn = oFactory.ConnectionHelper.GetConnection();

@@ -1,4 +1,6 @@
-﻿namespace CST451.Models.Users
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CST451.Models.Users
 {
     public class EmployeeViewModel
     {
@@ -7,6 +9,7 @@
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        [Range(0, 99999)]
         public int? Zip { get; set; }
         public string Country { get; set; }
         public string Email { get; set; }

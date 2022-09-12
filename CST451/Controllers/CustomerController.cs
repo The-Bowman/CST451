@@ -61,6 +61,13 @@ namespace CST451.Controllers
         public IActionResult Login(CustomerViewModel customer)
         {
             customer = oFactory.CustomerHelper.Login(customer);
+
+            if (!(bool)customer.Success)
+            {
+                ViewBag.Message = "Login Failed - Please Try Again";
+                return View("LoginResult", customer);
+            }
+
             HttpContext.Session.SetString("username", customer.Name);
             HttpContext.Session.SetString("userID", customer.ID.ToString());
             HttpContext.Session.SetString("cart", JsonSerializer.Serialize(new CartViewModel()));
@@ -101,6 +108,10 @@ namespace CST451.Controllers
             return View("Cart", cart);
         }
 
+        /// <summary>
+        /// Edit customer data in DB
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult EditCustomer()
         {

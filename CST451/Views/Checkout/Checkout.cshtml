@@ -7,18 +7,18 @@
 
 <h1>Checkout</h1>
 <hr />
-<form action="ProcessCheckout" method="post">
+<form action="ProcessCheckout" class="needs-validation" method="post" novalidate>
     <div>
         <h3>Order Details</h3>
         <hr />
         <div class="row">
             <div class="form-group col-md-6">
                 <label asp-for="Order.CustomerName">Customer Name</label>
-                <input asp-for="Order.CustomerName" type="text" readonly class="form-control-plaintext mb-2" id="inputName" value="@Model.Order.CustomerName" />
+                <input asp-for="Order.CustomerName" type="text" readonly class="form-control-plaintext mb-2" id="inputName" value="@Model.Order.CustomerName" required/>
             </div>
             <div class="form-group col-md-6">
                 <label asp-for="Order.CustomerID">Customer ID:</label>
-                <input asp-for="Order.CustomerID" type="number" readonly class="form-control-plaintext mb-2" value="@Model.Order.CustomerID" />
+                <input asp-for="Order.CustomerID" type="number" readonly class="form-control-plaintext mb-2" value="@Model.Order.CustomerID" required />
             </div>
         </div>
         <hr />
@@ -41,9 +41,7 @@
                     <input type="number" readonly id="productPrice" class="form-control-plaintext" value="@item.ProductPrice">
                 </div>
             </div>
-
         }
-
     </div>
 
     <div>
@@ -52,22 +50,22 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <input asp-for="CustomerShippingInfo.Name" type="text" class="form-control mb-2" id="inputName" placeholder="Recipient Name">
+            <input asp-for="CustomerShippingInfo.Name" type="text" class="form-control mb-2" id="inputName" placeholder="Recipient Name" required>
         </div>
         <div class="form-group col-md-6">
-            <input asp-for="CustomerShippingInfo.Email" type="email" class="form-control mb-2" id="inputEmail" placeholder="Recipient Email">
+            <input asp-for="CustomerShippingInfo.Email" type="email" class="form-control mb-2" id="inputEmail" placeholder="Recipient Email" required>
         </div>
     </div>
     <div class="form-group">
-        <input asp-for="CustomerShippingInfo.Address" type="text" class="form-control mb-2" id="inputAddress" placeholder="1234 Main St">
+        <input asp-for="CustomerShippingInfo.Address" type="text" class="form-control mb-2" id="inputAddress" placeholder="1234 Main St" required>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <input asp-for="CustomerShippingInfo.City" type="text" class="form-control mb-2" id="inputCity" placeholder="City">
+            <input asp-for="CustomerShippingInfo.City" type="text" class="form-control mb-2" id="inputCity" placeholder="City" required>
         </div>
         <div class="form-group col-md-4">
-            <select asp-for="CustomerShippingInfo.State" id="inputState" class="form-control mb-2">
-                <option selected>State...</option>
+            <select asp-for="CustomerShippingInfo.State" id="inputState" class="form-control mb-2" required>
+                <option value="" disabled selected>State...</option>
                 <option value="Alabama">Alabama</option>
                 <option value="Alaska">Alaska</option>
                 <option value="Arizona">Arizona</option>
@@ -120,7 +118,7 @@
             </select>
         </div>
         <div class="form-group col-md-2">
-            <input asp-for="CustomerBillingInfo.Zip" type="number" class="form-control mb-2" id="inputZip" placeholder="Zip">
+            <input asp-for="CustomerBillingInfo.Zip" type="text" pattern="[0-9]{5}" class="form-control mb-2" id="inputZip" placeholder="Zip" required>
         </div>
     </div>
     <input asp-for="CustomerShippingInfo.Country" type="hidden" value="USA">
@@ -131,33 +129,33 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <input asp-for="CustomerBillingInfo.Name" type="text" class="form-control mb-2" id="inputEmail4" placeholder="Customer Name">
+            <input asp-for="CustomerBillingInfo.Name" type="text" class="form-control mb-2" id="inputName2" placeholder="Customer Name" required>
         </div>
         <div class="form-group col-md-6">
-            <input asp-for="CustomerBillingInfo.Email" type="email" class="form-control mb-2" id="inputPassword4" placeholder="Customer Email">
+            <input asp-for="CustomerBillingInfo.Email" type="email" class="form-control mb-2" id="inputEmail2" placeholder="Customer Email" required>
         </div>
     </div>
     <div class="row">
         <div class="form-group col-md-4">
-            <input asp-for="CreditCardNumber" type="text" class="form-control mb-2" id="cardNumber" placeholder="Card Number... 1234-5678-9012-3456">
+            <input asp-for="CreditCardNumber" type="text" class="form-control mb-2" id="cardNumber" pattern="[0-9]{13,16}" placeholder="Card Number No Dashes: 1234567890123456" required>
         </div>
         <div class="form-group col-md-4">
-            <input asp-for="ExpirationDate" type="text" class="form-control mb-2" id="inputExp" placeholder="Exp Date (MM/YY)">
+            <input asp-for="ExpirationDate" type="text" class="form-control mb-2" id="inputExp" pattern="\d{1,2}\/\d{2}" placeholder="Exp Date (MM/YY)" required>
         </div>
         <div class="form-group col-md-4">
-            <input asp-for="CVV" type="number" class="form-control mb-2" id="inputCVV" placeholder="CVV (233)">
+            <input asp-for="CVV" type="text" class="form-control mb-2" id="inputCVV" pattern="[0-9]{3}" placeholder="CVV (233)" required>
         </div>
     </div>
     <div class="form-group">
-        <input asp-for="CustomerBillingInfo.Address" type="text" class="form-control mb-2" id="inputAddress" placeholder="1234 Main St">
+        <input asp-for="CustomerBillingInfo.Address" type="text" class="form-control mb-2" id="inputAddress2" placeholder="1234 Main St" required>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <input asp-for="CustomerBillingInfo.City" type="text" class="form-control mb-2" id="inputCity" placeholder="City">
+            <input asp-for="CustomerBillingInfo.City" type="text" class="form-control mb-2" id="inputCity2" placeholder="City" required>
         </div>
         <div class="form-group col-md-4">
-            <select asp-for="CustomerBillingInfo.State" id="inputState" class="form-control mb-2">
-                <option selected>State...</option>
+            <select asp-for="CustomerBillingInfo.State" id="inputState2" class="form-control mb-2" required>
+                <option value="" disabled selected>State...</option>
                 <option value="Alabama">Alabama</option>
                 <option value="Alaska">Alaska</option>
                 <option value="Arizona">Arizona</option>
@@ -210,14 +208,37 @@
             </select>
         </div>
         <div class="form-group col-md-2">
-            <input asp-for="CustomerBillingInfo.Zip" type="number" class="form-control mb-2" id="inputZip" placeholder="Zip">
+            <input asp-for="CustomerShippingInfo.Zip" type="text" pattern="[0-9]{5}" class="form-control mb-2" id="inputZip2" placeholder="Zip" required>
         </div>
     </div>
     <input asp-for="CustomerShippingInfo.Country" type="hidden" value="USA">
     <hr />
-    <button type="submit" class="btn btn-success">Checkout</button>
+    <div class="d-grid col-3">
+    <button type="submit" class="btn btn-success btn-lg">Checkout</button>
+    </div>
 </form>
 <div class="mt-3">
     @Html.ActionLink("Back to Cart", "ViewCart", "Cart", null,new {@class = "btn btn-danger mr-1"})
     @Html.ActionLink("Back to Products", "BrowseAll", "Product", null, new {@class = "btn btn-primary ml-1"})
 </div>
+
+<script>
+    // form validation
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

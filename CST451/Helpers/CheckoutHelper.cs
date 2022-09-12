@@ -24,6 +24,11 @@ namespace CST451.Helpers
             }
         }
 
+        /// <summary>
+        /// Inserts Order into Database
+        /// </summary>
+        /// <param name="vmCheckout"></param>
+        /// <returns>CheckoutModel</returns>
         public CheckoutModel AddOrder(CheckoutModel vmCheckout)
         {
             CheckoutDataModel dbCheckout = ParseVMCheckouttoDMCheckout(vmCheckout);
@@ -36,6 +41,11 @@ namespace CST451.Helpers
 
         #region CheckoutModel Parsing
 
+        /// <summary>
+        /// Parses ViewModel Checkout to DataModel Checkout
+        /// </summary>
+        /// <param name="vmCheckout"></param>
+        /// <returns></returns>
         private CheckoutDataModel ParseVMCheckouttoDMCheckout(CheckoutModel vmCheckout)
         {
             CheckoutDataModel dbCheckout = new CheckoutDataModel()
@@ -54,6 +64,11 @@ namespace CST451.Helpers
             return dbCheckout;
         }
 
+        /// <summary>
+        /// Parses DataModel Checkout to ViewModel Checkout
+        /// </summary>
+        /// <param name="dbCheckout"></param>
+        /// <returns></returns>
         private CheckoutModel ParseDMCheckouttoVMCheckout(CheckoutDataModel dbCheckout)
         {
             CheckoutModel vmCheckout = new CheckoutModel()
@@ -115,12 +130,12 @@ namespace CST451.Helpers
                 Address = customer.Address,
                 City = customer.City,
                 State = customer.State,
-                Zip = customer.Zip,
+                Zip = (int)customer.Zip,
                 Country = customer.Country,
                 Email = customer.Email,
-                Phone = customer.Phone,
-                Password = customer.Password,
-                Success = customer.Success
+                Phone = customer.Phone == null ? null : customer.Phone,
+                Password = customer.Password == null ? null : customer.Password,
+                Success = customer.Success == null ? true : customer.Success,
             };
             if (customer.ID != null)
                 customerViewModel.ID = customer.ID;
@@ -132,6 +147,11 @@ namespace CST451.Helpers
 
         #region OrderLine Parsing
 
+        /// <summary>
+        /// Parse from ViewModel OrderLines to DataModel OrderLines
+        /// </summary>
+        /// <param name="vmOrderLine"></param>
+        /// <returns></returns>
         private OrderLineDataModel ParseVMOrderLinetoDMOrderLine(OrderLineViewModel vmOrderLine)
         {
             OrderLineDataModel dbOrderLine = new OrderLineDataModel()
@@ -147,6 +167,11 @@ namespace CST451.Helpers
             return dbOrderLine;
         }
 
+        /// <summary>
+        /// Parse from DataModel OrderLines to ViewModel OrderLines
+        /// </summary>
+        /// <param name="dbOrderLine"></param>
+        /// <returns></returns>
         private OrderLineViewModel ParseDMOrderLinetoVMOrderLine(OrderLineDataModel dbOrderLine)
         {
             OrderLineViewModel vmOrderLine = new OrderLineViewModel()
@@ -166,6 +191,11 @@ namespace CST451.Helpers
 
         #region Order Parsing
 
+        /// <summary>
+        /// Parse from ViewModel Order to DataModel Order
+        /// </summary>
+        /// <param name="vmOrder"></param>
+        /// <returns></returns>
         public OrderDataModel ParseVMOrdertoDMOrder(OrderViewModel vmOrder)
         {
             OrderDataModel dbOrder = new OrderDataModel()
@@ -180,6 +210,11 @@ namespace CST451.Helpers
             return dbOrder;
         }
 
+        /// <summary>
+        /// Parse from DataModel Order to ViewModel Order
+        /// </summary>
+        /// <param name="dbOrder"></param>
+        /// <returns></returns>
         public OrderViewModel ParseDMOrdertoVMOrder(OrderDataModel dbOrder)
         {
             OrderViewModel vmOrder = new OrderViewModel()

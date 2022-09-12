@@ -40,6 +40,13 @@ namespace CST451.Controllers
         public IActionResult Login(EmployeeViewModel employee)
         {
             employee = oFactory.EmployeeHelper.Login(employee);
+
+            if (!(bool)employee.Success)
+            {
+                ViewBag.Message = "Login Failed - Please Try Again";
+                return View("EmployeePortal", employee);
+            }
+
             HttpContext.Session.SetString("username", employee.Name);
             HttpContext.Session.SetString("userID", employee.ID.ToString());
             HttpContext.Session.SetString("isAdmin", employee.IsAdmin.ToString());
@@ -49,6 +56,10 @@ namespace CST451.Controllers
             return View("LoginResult", employee);
         }
 
+        /// <summary>
+        /// Remove session keys to logout user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Logout()
         {
@@ -81,6 +92,11 @@ namespace CST451.Controllers
             return View("DisplayEmployee", employee);
         }
 
+        /// <summary>
+        /// Displays Form to retrieve a 
+        /// single employee by employee ID
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult FindEmployeeByEmplID()
         {
@@ -107,8 +123,20 @@ namespace CST451.Controllers
         [HttpPost]
         public IActionResult ProcessEmployeeEdit(EmployeeViewModel employee)
         {
-            employee = oFactory.EmployeeHelper.UpdateEmployee(employee);
+            bool isAdmin = Convert.ToBoolean(HttpContext.Session.GetString("isAdmin"));
+            employee = oFactory.EmployeeHelper.UpdateEmployee(employee, isAdmin);
             return View("EditEmployee", employee);
+        }
+
+        /// <summary>
+        /// Displays all employees
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult AllEmployees()
+        {
+            List<EmployeeViewModel> employees = oFactory.EmployeeHelper.GetAll();
+            return View(employees);
         }
     }
 }

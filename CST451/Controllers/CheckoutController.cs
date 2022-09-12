@@ -21,6 +21,10 @@ namespace CST451.Controllers
             }
         }
 
+        /// <summary>
+        /// Setup CheckoutModel
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Checkout()
         {
@@ -48,6 +52,11 @@ namespace CST451.Controllers
             return View(orderCartModel);
         }
 
+        /// <summary>
+        /// Take in CheckoutModel from form and insert to DB
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ProcessCheckout(CheckoutModel model)
         {
@@ -64,6 +73,10 @@ namespace CST451.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Parses cart from session
+        /// </summary>
+        /// <returns>CartViewModel</returns>
         private CartViewModel GetCart()
         {
             CartViewModel cart = oFactory.CartHelper.GetCart(HttpContext.Session.GetString("cart"));
@@ -76,6 +89,11 @@ namespace CST451.Controllers
             return cart;
         }
 
+        /// <summary>
+        /// Parses objects in cart to OrderLines
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         private List<OrderLineViewModel> GetOrderLines(CartViewModel cart)
         {
             List<Models.Orders.OrderLineViewModel> lines = (from product in cart.Products

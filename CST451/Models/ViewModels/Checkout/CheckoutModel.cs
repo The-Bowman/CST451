@@ -1,6 +1,7 @@
 ﻿using CST451.Models.Orders;
 using CST451.Models.Users;
 using CST451.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace CST451.Models.ViewModels.Checkout
 {

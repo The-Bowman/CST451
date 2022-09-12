@@ -1,11 +1,12 @@
-﻿using CST451.Data.DataModel.UserDataModels;
+﻿using CST451.Data.DataModel.ProductDataModels;
+using CST451.Data.DataModel.UserDataModels;
 using System.Data.SqlClient;
 
 namespace CST451.BizLogic.Database
 {
     public class EmployeeBizLogic
     {
-       
+
         private Factory _factory;
         internal Factory oFactory
         {
@@ -210,8 +211,85 @@ namespace CST451.BizLogic.Database
             }
         }
 
-        public EmployeeDataModel Update(EmployeeDataModel dbEmployee)
+        /// <summary>
+        /// Get All Employee details
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public List<EmployeeDataModel> GetAll()
         {
+            string dbConn = oFactory.ConnectionHelper.GetConnection();
+
+            string getQry = "SELECT * FROM [dbo].[Employee];";
+
+            List<EmployeeDataModel> employeeList = new List<EmployeeDataModel>();
+
+            using (SqlConnection conn = new SqlConnection(dbConn))
+            {
+                using (SqlCommand cmd = new SqlCommand(getQry, conn))
+                {
+
+                    try
+                    {
+                        conn.Open();
+                        var reader = cmd.ExecuteReader();
+
+                        // successful result
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                EmployeeDataModel employee = new EmployeeDataModel()
+                                {
+                                    ID = (int)reader["ID"],
+                                    Name = reader["Name"].ToString(),
+                                    Address = reader["Address"].ToString(),
+                                    City = reader["City"].ToString(),
+                                    State = reader["State"].ToString(),
+                                    Zip = (int?)Convert.ToInt32(reader["Zip"]),
+                                    Phone = reader["Phone"].ToString(),
+                                    Username = reader["Username"].ToString(),
+                                    Email = reader["Email"].ToString(),
+                                    Password = reader["Password"].ToString(),
+                                    IsAdmin = (int?)Convert.ToInt32(reader["IsAdmin"]) == 0 ? false : true,
+                                    Success = true,
+                                };
+
+                                employeeList.Add(employee);
+                            }
+
+                        }
+
+                        conn.Close();
+
+                        return employeeList;
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        conn.Close();
+                        throw new Exception("An error occured trying to add the customer\nError: " + ex.Message);
+                    }
+                }
+
+            }
+        }
+
+
+        /// <summary>
+        /// Update employee record in DB
+        /// </summary>
+        /// <param name="dbEmployee"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public EmployeeDataModel Update(EmployeeDataModel dbEmployee, bool isAdmin)
+        {
+            if (!isAdmin)
+            {
+                dbEmployee.Success = false;
+                return dbEmployee;
+            }
+
             string dbConn = oFactory.ConnectionHelper.GetConnection();
 
             string updateEmployeeQry = "UPDATE [dbo].[Employee] SET Name = @Name, Address = @Address, City =  @City, State = @State, Zip = @Zip, Country = @Country, Phone = @Phone, Email = @Email, Username = @Username, Password = @Password  WHERE ID = @ID";
@@ -230,8 +308,8 @@ namespace CST451.BizLogic.Database
                     cmd.Parameters.AddWithValue("@Phone", dbEmployee.Phone);
                     cmd.Parameters.AddWithValue("@Email", dbEmployee.Email);
                     cmd.Parameters.AddWithValue("@Username", dbEmployee.Username);
-                    cmd.Parameters.AddWithValue("@Password", dbEmployee.Password);   
-                    cmd.Parameters.AddWithValue("@ID", dbEmployee.ID);   
+                    cmd.Parameters.AddWithValue("@Password", dbEmployee.Password);
+                    cmd.Parameters.AddWithValue("@ID", dbEmployee.ID);
 
 
                     try
@@ -261,8 +339,20 @@ namespace CST451.BizLogic.Database
             }
         }
 
-        public EmployeeDataModel Delete(EmployeeDataModel dbEmployee)
+        /// <summary>
+        /// Delete employee record from DB
+        /// </summary>
+        /// <param name="dbEmployee"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public EmployeeDataModel Delete(EmployeeDataModel dbEmployee, bool isAdmin)
         {
+            if (!isAdmin)
+            {
+                dbEmployee.Success = false;
+                return dbEmployee;
+            }
+
             string dbConn = oFactory.ConnectionHelper.GetConnection();
 
             string deleteEmployeeQry = "DELETE FROM [dbo].[Employee] WHERE ID = @ID";

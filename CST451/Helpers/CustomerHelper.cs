@@ -44,6 +44,11 @@ namespace CST451.Helpers
             return ParseDMCustomerToVMCustomer(dmCustomer);
         }
 
+        /// <summary>
+        /// Gets individual customer from DB
+        /// </summary>
+        /// <param name="vmCustomer"></param>
+        /// <returns></returns>
         public CustomerViewModel GetOne(CustomerViewModel vmCustomer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
@@ -51,6 +56,11 @@ namespace CST451.Helpers
             return ParseDMCustomerToVMCustomer(dmCustomer);
         }
 
+        /// <summary>
+        /// Edits Customer in DB
+        /// </summary>
+        /// <param name="vmCustomer"></param>
+        /// <returns></returns>
         public CustomerViewModel EditCustomer(CustomerViewModel vmCustomer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);
@@ -58,6 +68,11 @@ namespace CST451.Helpers
             return ParseDMCustomerToVMCustomer(dmCustomer);
         }
 
+        /// <summary>
+        /// Deletes Customer from DB
+        /// </summary>
+        /// <param name="vmCustomer"></param>
+        /// <returns></returns>
         public CustomerViewModel DeleteCustomer(CustomerViewModel vmCustomer)
         {
             CustomerDataModel dmCustomer = ParseVMCustomerToDMCustomer(vmCustomer);

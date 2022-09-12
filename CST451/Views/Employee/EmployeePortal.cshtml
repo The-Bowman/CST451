@@ -5,9 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>EmployeePortal</h1>
+<p class="alert alert-danger" id="fail" hidden>@ViewBag.Message</p>
 
-<h4>EmployeeViewModel</h4>
+
+<h1>Employee Portal</h1>
+
+<h4>Login</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -27,8 +30,23 @@
             </div>
             <br/>
             <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary m-2" />
+                <input type="submit" value="Login" class="btn btn-success m-2" />
             </div>
         </form>
     </div>
 </div>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var msg = '@ViewBag.Message';
+            if (msg === "Login Failed - Please Try Again") {
+                document.getElementById("fail").hidden = false;
+            }
+           
+        });
+    </script>
+}
+

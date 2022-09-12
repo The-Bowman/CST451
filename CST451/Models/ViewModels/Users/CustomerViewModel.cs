@@ -1,4 +1,5 @@
 ﻿using CST451.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace CST451.Models.Users
 {

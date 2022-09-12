@@ -60,6 +60,11 @@ namespace CST451.Helpers
             return vmProduct;
         }
 
+        /// <summary>
+        /// Edits product in DB
+        /// </summary>
+        /// <param name="vmProduct"></param>
+        /// <returns></returns>
         internal ProductViewModel EditProduct(ProductViewModel vmProduct)
         {
             ProductDataModel dbProduct = ParseVMtoDB(vmProduct);

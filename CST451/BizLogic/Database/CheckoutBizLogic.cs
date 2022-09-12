@@ -24,7 +24,12 @@ namespace CST451.BizLogic.Database
         }
 
 
-
+        /// <summary>
+        /// Insert Order and OrderLines into DB
+        /// </summary>
+        /// <param name="dbCheckout"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public CheckoutDataModel AddOrder(CheckoutDataModel dbCheckout)
         {
             string dbConn = oFactory.ConnectionHelper.GetConnection();
@@ -43,6 +48,7 @@ namespace CST451.BizLogic.Database
                     {
                         conn.Open();
 
+                        // returns the ID from Order inserted to use for Order Lines table
                         var id = cmd.ExecuteScalar();
                         
                         if (id != null)
@@ -68,6 +74,7 @@ namespace CST451.BizLogic.Database
                             if (results == dbCheckout.OrderLines.Count)
                             {
                                 conn.Close();
+                                dbCheckout.Order.OrderID = (int?)id;
                                 dbCheckout.Success = true;
                                 return dbCheckout;
                             }
