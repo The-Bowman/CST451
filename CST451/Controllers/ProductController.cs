@@ -27,6 +27,7 @@ namespace CST451.Controllers
         public IActionResult BrowseAll()
         {
             List<ProductViewModel> products = oFactory.ProductHelper.GetAll();
+            ViewBag.Message = "";
             return View(products);
         }
 
