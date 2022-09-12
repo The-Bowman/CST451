@@ -26,7 +26,6 @@ namespace CST451.Helpers
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         internal EmployeeViewModel GetOne(EmployeeViewModel vmEmployee)
         {
             EmployeeDataModel dbEmployee = ParseVMEmployeeToDMEmployee(vmEmployee);
